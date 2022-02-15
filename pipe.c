@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 16:35:30 by plouvel           #+#    #+#             */
-/*   Updated: 2022/02/15 18:30:40 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/02/15 22:10:52 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,8 +156,8 @@ int	check_inst(t_data *data)
 			perror("dup2");
 			return (-1);
 		}
-		close(fd[0]);
 		close(fd[1]);
+		close(fd[0]);
 		if (execv(CHK_PATH, data->rnd) == -1)
 		{
 			perror("execv");
@@ -171,8 +171,22 @@ int	check_inst(t_data *data)
 		for (int i = 0; data->inst[i]; i++)
 			ft_putstr_fd(data->inst[i], fd[1]);
 		close(fd[1]);
-		waitpid(pid, &data->chk_status, 0);
+		if (waitpid(pid, &data->chk_status, 0) == -1)
+		{
+			perror("waitpid");
+			return (-1);
+		}
 		if (WIFEXITED(data->chk_status))
 			data->chk_status = WEXITSTATUS(data->chk_status);
 	}
+}
+
+int	make_test(const char *a, const char *b)
+{
+	t_data	data = {0};
+
+	get_random_number(&data, a, b);
+	get_ps_inst(&data);
+	check_inst(&data);
+	return (data.chk_status);
 }
