@@ -1,35 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.h                                             :+:      :+:    :+:   */
+/*   ps_tester.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 16:46:29 by plouvel           #+#    #+#             */
-/*   Updated: 2022/02/16 13:27:00 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/02/16 18:01:05 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TEST_H
-# define TEST_H
+#ifndef PS_TESTER_H
+# define PS_TESTER_H
 
 # include "libft.h"
-
-# define NBR_TEST_1 100
-# define NBR_TEST_1_RANGE_A "0"
-# define NBR_TEST_1_RANGE_B "4"
-
-# define NBR_TEST_2 100
-# define NBR_TEST_2_RANGE_A "0"
-# define NBR_TEST_2_RANGE_B "99"
-
-# define NBR_TEST_3 50
-# define NBR_TEST_3_RANGE_A "0"
-# define NBR_TEST_3_RANGE_B "499"
-
-# define RND_PATH "random.sh"
-# define PS_PATH "push_swap"
-# define CHK_PATH "checker"
+# include "user_define.h"
 
 # define HEADER "\
 \n{36;1}/* ************************************************************************** */\n\
@@ -79,14 +64,16 @@ Make sure you do a {1}lot of tests{0} on your part !\n\n"
 # define STR_SAMPLE_KO	"\t*  {31;1}KO{0} ! {4}One of the test failed the checker :{0}\n\t|\n\
 \t|-\tYou can find the random number tested in the file {1}failed_test.log{0}.\n\n"
 
+# define STR_INTERNAL_ERR  "{1;31}Internal error.{0}\n"
+
 # define OK 2
 # define KO 1
 
 typedef struct s_data
 {
-	char	**rnd;
-	size_t	nbr_inst;
-	int		status;
+	char			**rnd;
+	unsigned int	nbr_inst;
+	int				status;
 }				t_data;
 
 typedef struct s_sample
@@ -98,8 +85,22 @@ typedef struct s_sample
 	int				status;
 }				t_sample;
 
-int	check_inst(t_data *data);
-int	get_ps_inst(t_data *data);
-int	get_random_number(t_data *data, const char *a, const char *b);
+/* pipe.c */
+
+int		get_rnd_nbr(t_data *data, const char *a, const char *b);
+int		get_nbr_inst(t_data *data);
+int		launch_checker(t_data *data);
+
+/* test.c */
+
+int		make_test(const char *a, const char *b);
+int		sample_test(unsigned int nbr, const char *a, const char *b);
+
+/* utils.c */
+
+void	close_fds(int fd[2]);
+int		free_tab(char **tab);
+int		perror_n_ret(const char *str);
+int		throw_error(void);
 
 #endif

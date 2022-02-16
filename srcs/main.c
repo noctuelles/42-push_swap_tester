@@ -1,11 +1,11 @@
 #include <unistd.h>
 #include <stdio.h>
 #include "ft_printf.h"
-#include "test.h"
+#include "ps_tester.h"
 
-void	print_center_banner(const char *style, const char *str)
+static void	print_center_banner(const char *style, const char *str)
 {
-	unsigned int	nbr_wildcard;
+	size_t			nbr_wildcard;
 	size_t			str_len;
 	t_index			i;
 
@@ -25,11 +25,12 @@ void	print_center_banner(const char *style, const char *str)
 	ft_putstr(" */\n\n");
 }
 
-int	check_files(void)
+static int	check_files(void)
 {
 	int	ret;
 
 	ret = OK;
+
 	ft_printf(STR_CHECK_PS);
 	if (access(PS_PATH, F_OK | X_OK) == -1)
 	{
@@ -38,6 +39,7 @@ int	check_files(void)
 	}
 	else
 		ft_printf(STR_OK);
+
 	ft_printf(STR_CHECK_RND);
 	if (access(RND_PATH, F_OK | X_OK) == -1)
 	{
@@ -46,6 +48,7 @@ int	check_files(void)
 	}
 	else
 		ft_printf(STR_OK);
+
 	ft_printf(STR_CHECK_CHK);
 	if (access(CHK_PATH, F_OK | X_OK) == -1)
 	{
@@ -54,13 +57,12 @@ int	check_files(void)
 	}
 	else
 		ft_printf(STR_OK);
+
 	return (ret);
 }
 
-int main()
+int main(void)
 {
-	t_data	data = {0};
-
 	ft_printf(HEADER);
 	print_center_banner("{1;4}", STR_WARNING_TITLE);
 	ft_printf(STR_WARNING);
@@ -73,25 +75,36 @@ int main()
 	else
 		ft_printf(STR_CHECK_OK);
 	print_center_banner("{1;4}", STR_BASIC_TEST);
+
 	ft_printf(STR_TEST_1);
-	make_test("0", "4");
+	if (make_test("0", "4") == -1)
+		return (throw_error());
+
 	ft_printf(STR_TEST_2);
-	make_test("0", "49");
+	if (make_test("0", "49") == -1)
+		return (throw_error());
+
 	ft_printf(STR_TEST_3);
-	make_test("0", "500");
+	if (make_test("0", "500") == -1)
+		return (throw_error());
+
 	print_center_banner("{1;4}", STR_SAMPLE_TEST);
 
 	ft_printf(STR_SAMPLE_1, NBR_TEST_1, NBR_TEST_1_RANGE_A, NBR_TEST_1_RANGE_B);
 
-	sample_test(NBR_TEST_1, NBR_TEST_1_RANGE_A, NBR_TEST_1_RANGE_B);
+	if (sample_test(NBR_TEST_1, NBR_TEST_1_RANGE_A, NBR_TEST_1_RANGE_B) == -1)
+		return (throw_error());
 
 	ft_printf(STR_SAMPLE_1, NBR_TEST_2, NBR_TEST_2_RANGE_A, NBR_TEST_2_RANGE_B);
 
-	sample_test(NBR_TEST_2, NBR_TEST_2_RANGE_A, NBR_TEST_2_RANGE_B);
+	if (sample_test(NBR_TEST_2, NBR_TEST_2_RANGE_A, NBR_TEST_2_RANGE_B) == -1)
+		return (throw_error());
 
 	ft_printf(STR_SAMPLE_1, NBR_TEST_3, NBR_TEST_3_RANGE_A, NBR_TEST_3_RANGE_B);
 
-	sample_test(NBR_TEST_3, NBR_TEST_3_RANGE_A, NBR_TEST_3_RANGE_B);
+	if (sample_test(NBR_TEST_3, NBR_TEST_3_RANGE_A, NBR_TEST_3_RANGE_B) == -1)
+		return (throw_error());
 
 	print_center_banner("{1;4}", STR_DONE_TEST);
+	return (0);
 }

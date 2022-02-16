@@ -16,5 +16,5 @@ fi
 #
 #     ./push_swap $(./randomizer.sh 0 10)
 
-echo -n "benchmark "
+echo -n "tester "
 seq $1 $2 | shuf | tr '\n' ' ' | sed -r 's/.$//'
