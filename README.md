@@ -1,5 +1,5 @@
 # 42-push_swap_tester
-A simple push_swap tester.
+A simple C push_swap tester.
 
 [![42](https://img.shields.io/badge/42-personnal-green.svg)](https://shields.io/)
 [![Vim](https://img.shields.io/badge/--019733?logo=vim)](https://www.vim.org/)
