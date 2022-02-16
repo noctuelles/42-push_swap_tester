@@ -6,7 +6,7 @@
 #    By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/16 16:55:38 by plouvel           #+#    #+#              #
-#    Updated: 2022/02/16 17:59:48 by plouvel          ###   ########.fr        #
+#    Updated: 2022/02/16 20:01:23 by plouvel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,6 +58,9 @@ fclean:			clean
 
 re:				fclean all
 
+test:			all
+				./$(NAME)
+
 -include $(OBJS:.o=.d)
 
-.PHONY:			all clean fclean re bonus
+.PHONY:			all clean fclean re test 

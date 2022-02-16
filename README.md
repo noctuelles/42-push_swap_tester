@@ -12,6 +12,10 @@ A simple push_swap tester.
 
 This mini-project is made for testing Push_Swap. This taught me how to use **exec()** family function and basic of piping and the use of **dup2()**. Usefull for the next minishell project.
 
+## Screenshot
+
+![tester](assets/tester.png)
+
 ## Functionality
 
 * Basic testing.
