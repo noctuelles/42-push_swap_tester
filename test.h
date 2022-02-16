@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 16:46:29 by plouvel           #+#    #+#             */
-/*   Updated: 2022/02/15 22:21:41 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/02/16 01:49:44 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,7 @@ Make sure you do a {1}lot of tests{0} on your part !\n\n"
 typedef struct s_data
 {
 	char	**rnd;
-	char	**inst;
-	t_list	*inst_list;
-	size_t	inst_nbr;
-	int		chk_status;
+	int		status;
 }				t_data;
 
 typedef struct s_sample

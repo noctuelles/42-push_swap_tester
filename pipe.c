@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 16:35:30 by plouvel           #+#    #+#             */
-/*   Updated: 2022/02/15 22:10:52 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/02/16 01:52:08 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,133 +60,59 @@ int	get_random_number(t_data *data, const char *a, const char *b)
 	}
 }
 
-static char	**make_tab_from_list(t_list *list)
-{
-	char	**tab;
-	size_t	lst_size;
-	t_index	i;
-
-	lst_size = ft_lstsize(list);
-	tab = (char **) malloc((lst_size + 1) * sizeof(char *));
-	if (!tab)
-		return (NULL);
-	i = 0;
-	while (i < lst_size)
-	{
-		tab[i] = (char *) list->content;
-		list = list->next;
-		i++;
-	}
-	tab[i] = NULL;
-	return (tab);
-}
-
-int	get_ps_inst(t_data *data)
+int	do_test(t_data *data)
 {
 	pid_t	pid;
+	pid_t	pid2;
 	int		fd[2];
-	char	*line;
-	t_list	*elem;
+	int		fd2[2];
+	int		status;
 
-	if (pipe(fd) == -1)
-	{
-		perror("pipe");
-		return (-1);
-	}
+	pipe(fd);
 	pid = fork();
-	if (pid == -1)
+	if (pid == 0)
 	{
-		perror("fork");
-		return (-1);
-	}
-	else if (pid == 0)
-	{
-		if (dup2(fd[1], STDOUT_FILENO) == -1)
-		{
-			perror("dup2");
-			return (-1);
-		}
+		dup2(fd[1], STDOUT_FILENO);
 		close(fd[0]);
-		if (execv(PS_PATH, data->rnd) == -1)
-		{
-			perror("execv");
-			close(fd[1]);
-			return (-1);
-		}
 		close(fd[1]);
+		pipe(fd2);
+		pid2 = fork();
+		if (pid2 == 0)
+		{
+			dup2(fd2[0], STDIN_FILENO);
+			close(fd2[0]);
+			close(fd2[1]);
+			execv(CHK_PATH, data->rnd);
+		}
+		else
+		{
+			dup2(fd2[1], STDOUT_FILENO);
+			close(fd2[0]);
+			close(fd2[1]);
+			execv(PS_PATH, data->rnd);
+		}
 	}
 	else
 	{
 		close(fd[1]);
-		while ((line = get_next_line(fd[0])))
-		{
-			elem = ft_lstnew(line);
-			if (!elem)
-				return (-1);
-			ft_lstadd_back(&data->inst_list, elem);
-			data->inst_nbr++;
-		}
-		data->inst = make_tab_from_list(data->inst_list);
+		char *line = get_next_line(fd[0]);
+		if (ft_strcmp(line, "OK\n") == 0)
+			data->status = 0;
+		else
+			data->status = 1;
+		free(line);
 		close(fd[0]);
-	}
-}
-
-int	check_inst(t_data *data)
-{
-	pid_t	pid;
-	int		fd[2];
-	char	*line;
-	t_list	*elem;
-
-	if (pipe(fd) == -1)
-	{
-		perror("pipe");
-		return (-1);
-	}
-	pid = fork();
-	if (pid == -1)
-	{
-		perror("fork");
-		return (-1);
-	}
-	else if (pid == 0)
-	{
-		if (dup2(fd[0], STDIN_FILENO) == -1)
-		{
-			perror("dup2");
-			return (-1);
-		}
-		close(fd[1]);
-		close(fd[0]);
-		if (execv(CHK_PATH, data->rnd) == -1)
-		{
-			perror("execv");
-			close(fd[1]);
-			return (-1);
-		}
-	}
-	else
-	{
-		close(fd[0]);
-		for (int i = 0; data->inst[i]; i++)
-			ft_putstr_fd(data->inst[i], fd[1]);
-		close(fd[1]);
-		if (waitpid(pid, &data->chk_status, 0) == -1)
-		{
-			perror("waitpid");
-			return (-1);
-		}
-		if (WIFEXITED(data->chk_status))
-			data->chk_status = WEXITSTATUS(data->chk_status);
 	}
 }
 
 int	make_test(const char *a, const char *b)
 {
-	t_data	data = {0};
+	t_data	data;
 
 	get_random_number(&data, a, b);
-	get_ps_inst(&data);
-	check_inst(&data);
-	return (data.chk_status);
+	do_test(&data);
+	if (data.status == 0)
+		ft_printf(STR_OK);
+	else
+		ft_printf(STR_KO);
 }

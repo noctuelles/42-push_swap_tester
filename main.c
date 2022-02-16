@@ -74,11 +74,9 @@ int main()
 		ft_printf(STR_CHECK_OK);
 	print_center_banner("{1;4}", STR_BASIC_TEST);
 	ft_printf(STR_TEST_1);
-	make_test("0", "4");
+	make_test("0", "9");
 	ft_printf(STR_TEST_2);
-	make_test("0", "99");
+	make_test("0", "49");
 	ft_printf(STR_TEST_3);
-	make_test("0", "499");
-	print_center_banner("{1;4}", STR_SAMPLE_TEST);
-	ft_printf(STR_SAMPLE_1, NBR_TEST_1, "0", "499"); 
+	make_test("0", "500");
 }
