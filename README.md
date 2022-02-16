@@ -75,7 +75,7 @@ I recommand you copying your push_swap binary and the checker binary into the te
 
 You can also change for each sampling, the number of test that will be executed and the range. 
 
-"0" "99" means you're executing test with **100 random numbers**, within range of **0-100**.
+"0" "99" means you're executing test with **100 random numbers**, and those numbers are within range of **0-100**.
 
 Then
 
