@@ -80,6 +80,7 @@ You can also change for each sampling, the number of test that will be executed 
 Then
 
 ```
-make
-./push_swap_tester
+make test
+or
+make all && ./push_swap_tester
 ```
