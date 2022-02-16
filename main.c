@@ -74,9 +74,24 @@ int main()
 		ft_printf(STR_CHECK_OK);
 	print_center_banner("{1;4}", STR_BASIC_TEST);
 	ft_printf(STR_TEST_1);
-	make_test("0", "9");
+	make_test("0", "4");
 	ft_printf(STR_TEST_2);
 	make_test("0", "49");
 	ft_printf(STR_TEST_3);
 	make_test("0", "500");
+	print_center_banner("{1;4}", STR_SAMPLE_TEST);
+
+	ft_printf(STR_SAMPLE_1, NBR_TEST_1, NBR_TEST_1_RANGE_A, NBR_TEST_1_RANGE_B);
+
+	sample_test(NBR_TEST_1, NBR_TEST_1_RANGE_A, NBR_TEST_1_RANGE_B);
+
+	ft_printf(STR_SAMPLE_1, NBR_TEST_2, NBR_TEST_2_RANGE_A, NBR_TEST_2_RANGE_B);
+
+	sample_test(NBR_TEST_2, NBR_TEST_2_RANGE_A, NBR_TEST_2_RANGE_B);
+
+	ft_printf(STR_SAMPLE_1, NBR_TEST_3, NBR_TEST_3_RANGE_A, NBR_TEST_3_RANGE_B);
+
+	sample_test(NBR_TEST_3, NBR_TEST_3_RANGE_A, NBR_TEST_3_RANGE_B);
+
+	print_center_banner("{1;4}", STR_DONE_TEST);
 }
